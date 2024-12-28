@@ -1,0 +1,4 @@
+pillow
+picamera2
+tk
+pytest
