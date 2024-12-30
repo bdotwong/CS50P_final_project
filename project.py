@@ -9,15 +9,14 @@ def main():
     args = parse_args()
 
     capture_images(
-        output_dir = arg.output,
+        output_dir = args.output,
         num_images = args.images,
         interval = args.time,
         display = args.display,
     )
 
-    print(f"Captured {args.images} images. Images are saved in the {arg.output} directory.")
+    print(f"Captured {args.images} images. Images are saved in the {args.output} directory.")
 
-    # Create GIF
     image_files = [
         os.path.join("images", f"image_{i+1}.jpg") for i in range(args.images)
     ]
@@ -31,7 +30,7 @@ def main():
     create_gif(images, "output.gif", args.size)
     print("GIF created: output.gif")
 
-def parse_args():
+def parse_args(args=None):
     def check_images(value):
         value = int(value)
         if value < 1 or value > 20:
@@ -49,6 +48,7 @@ def parse_args():
     parser.add_argument("--time", type=check_time, default=2, help="Time interval (in seconds) between captures (default: 2).")
     parser.add_argument("--display", action="store_true", default=True,
         help="Display camera feed in a Tkinter window (default: True).")
+    parser.add_argument("--no-display", action="store_false", dest="display", help="Disable the camera feed display window.")
     parser.add_argument("--size", type=str, default="medium", choices=["small", "medium", "xl"],
         help="Size of the GIF: small, medium, or xl (default: medium).")
     parser.add_argument("--output", type=str, default="images", help="Directory to save captured images (default: images).")
@@ -107,7 +107,7 @@ def gif_resolution(size):
         "medium": (640, 480), # (default)
         "xl": (1280, 960)
     }
-    
+
     return resolutions[size]
 
 
